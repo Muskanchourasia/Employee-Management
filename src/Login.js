@@ -11,7 +11,7 @@ function LoginUi(props) {
     // if (
     //   email === JSON.parse(localStorage.getItem("email")) &&
     //   password === JSON.parse(localStorage.getItem("password")) )
-    props.history.push("/Nav");
+    props.history.push("/dashboard");
   }
 
   return (

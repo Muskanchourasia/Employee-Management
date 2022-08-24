@@ -1,14 +1,15 @@
-import { createSlice, AsyncThunk, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
-export const getUsers = createAsyncThunk("users/getUsers", async () => {
-  return fetch("http://localhost:3001/users").then((res) => res.json());
-});
-
-const userSlice = createSlice({
-  name: "users",
+export const UserReducer = createSlice({
+  name: "user",
   initialState: {
     users: [],
-    loading: false,
+    // loading: false,
+  },
+  reducers: {
+    userData: (state, action) => {
+      state.users = action.payload;
+    },
   },
   // extraReducers: {
   //   [getUsers.pending]: (state, action) => {
@@ -23,5 +24,5 @@ const userSlice = createSlice({
   //   },
   // },
 });
-
-export default userSlice.reducer;
+export const { userData } = UserReducer.actions;
+export default UserReducer.reducer;
