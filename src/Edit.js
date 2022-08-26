@@ -1,10 +1,27 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { withRouter } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { userData } from "./redux/features/userSlice";
 import { Button } from "antd";
-import "./App.css";
 
-function SignupUi(props) {
+function EditUi(props) {
+  useEffect(() => {
+    fetch(`http://localhost:3001/users/${props.location.state.id}`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: JSON.parse(localStorage.getItem("token")),
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        setdata(res.users);
+      });
+  }, []);
+  const [data, setdata] = useState("");
+
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [gender, setGender] = useState("");
@@ -14,7 +31,11 @@ function SignupUi(props) {
   const [salary, setSalary] = useState("");
   const [password, setPassword] = useState("");
 
-  function handleClick() {
+  //const dispatch = useDispatch();
+
+  // const data = useSelector((state) => state.user.users);
+
+  const handleClick1 = (id) => {
     let data = {
       username,
       email,
@@ -25,54 +46,34 @@ function SignupUi(props) {
       salary,
       password,
     };
-    // console.log(data);
-    fetch("http://localhost:3001/users", {
-      method: "POST",
+    fetch(` http://localhost:3001/users/${props.location.state.id}`, {
+      method: "PUT",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        Authorization: JSON.parse(localStorage.getItem("token")),
       },
       body: JSON.stringify(data),
     }).then((result) => result.json());
 
-    if (
-      username !== "" &&
-      email !== "" &&
-      gender !== "" &&
-      mob_no !== "" &&
-      role !== "" &&
-      address !== "" &&
-      salary !== "" &&
-      password !== ""
-    )
-      props.history.push("/loginUi");
-  }
-
-  // const url = "http://localhost:3001/";
-
-  // function handleClick1 = () => {
-  //   fetch(url)
-  //     .then((res) => res.json())
-  //     .then((url) => {
-  //       setState();
-  //     });
-  // };
-
-  // function handleClick() {
-  //   localStorage.setItem("name", JSON.stringify(username));
-  //   localStorage.setItem("role", JSON.stringify(role));
-  //   localStorage.setItem("email", JSON.stringify(email));
-  //   localStorage.setItem("password", JSON.stringify(password));
-  //   localStorage.setItem("number", JSON.stringify(number));
-  //   if (username !== "" && email !== "" && password !== "" && number !== "") {
-  //     props.history.push("/loginUi");
-  //   }
-  // }
+    // if (
+    //   username !== "" &&
+    //   email !== "" &&
+    //   gender !== "" &&
+    //   mob_no !== "" &&
+    //   role !== "" &&
+    //   address !== "" &&
+    //   salary !== "" &&
+    //   password !== ""
+    // ) {
+    // }
+    props.history.push("/Dashboard");
+  };
 
   return (
     <div className="main">
       <div>
-        <h1>SignUp Page</h1>
+        <h1>Edit </h1>
 
         <div>
           <label className="form-label" htmlFor="Username">
@@ -135,12 +136,23 @@ function SignupUi(props) {
             Role:
           </label>
           <br />
-          <select onChange={(event) => setRole(event.target.value)}>
-            <option value="junior">junior</option>
-            <option value="senior">senior</option>
-            <option value="lead">lead</option>
-          </select>
+          {/* <Select> */}
+          <input
+            type="text"
+            placeholder="Enter your Position"
+            className="name"
+            onChange={(event) => setRole(event.target.value)}
+          />
+
+          {/* <Menu>
+              <Menu.Item>junior</Menu.Item>
+              <Menu.Item>senior</Menu.Item>
+              <Menu.Item>lead</Menu.Item>
+            </Menu>
+          </Select> */}
         </div>
+        <br />
+
         <div>
           <label className="form-label" htmlFor="Address">
             Address
@@ -184,12 +196,14 @@ function SignupUi(props) {
         <br />
 
         <div className="Submit-button">
-          <Button type="primary" onClick={handleClick}>
-            Sign Up
+          <Button type="primary" onClick={handleClick1}>
+            update
           </Button>
+
+          <Button type="primary">cancel</Button>
         </div>
       </div>
     </div>
   );
 }
-export default withRouter(SignupUi);
+export default withRouter(EditUi);
