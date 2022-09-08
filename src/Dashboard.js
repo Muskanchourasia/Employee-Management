@@ -2,13 +2,18 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { userData } from "./redux/features/userSlice";
-import { Card, Col, Row } from "antd";
-import { Button } from "antd";
+import { Card } from "antd";
+import { Button, Select } from "antd";
+
+const { Option } = Select;
 
 function Dashboard(props) {
   const text = useSelector((state) => state.user.users);
   const [Role, setRole] = useState("");
   const dispatch = useDispatch();
+  const handleChange = (value) => {
+    setRole(value);
+  };
 
   useEffect(() => {
     fetch("http://localhost:3001/users", {
@@ -64,50 +69,78 @@ function Dashboard(props) {
   return (
     <div>
       <form>
-        <label htmlFor="Role">Choose Role:</label>
-        <select
+        <label htmlFor="Role"> </label>
+
+        <Select
+          defaultValue="Select Role"
+          style={{
+            width: 400,
+            textAlign: "center",
+          }}
+          onChange={handleChange}
+          size="large"
+        >
+          <Option disabled style={{ display: "none" }} Selected></Option>
+          <Option value="junior">junior</Option>
+          <Option value="senior">senior</Option>
+          <Option value="lead">lead</Option>
+        </Select>
+        {Role !== "" && (
+          <Button type="primary" size="large" onClick={handleClick2}>
+            Filter
+          </Button>
+        )}
+
+        {/* <select
+          style={{
+            width: 250,
+          }}
           onChange={(event) => setRole(event.target.value)}
           id="Role"
           name="Role"
+          placeholder="Role"
         >
+          <option disabled style={{ display: "none" }} selected>
+            Select Role
+          </option>
           <option value="senior">senior</option>
           <option value="junior">junior</option>
           <option value="lead">lead</option>
         </select>
-
-        <Button type="primary" onClick={handleClick2}>
-          Filter
-        </Button>
+        {Role !== "" && (
+          <Button type="primary" onClick={handleClick2}>
+            Filter
+          </Button>
+        )} */}
       </form>
 
-      <div className="main2">
-        <Row gutter={5}>
-          <Col span={12}>
-            {text.map((item, index) => (
-              <Card key={index} title="Employee Details">
-                <p>Username: {item.username}</p>
-                <p>Email: {item.email}</p>
-                <p>Role: {item.role}</p>
-                <p>Address: {item.address}</p>
-                <p>Salary :{item.salary}</p>
-                <Button
-                  type="danger"
-                  value={index}
-                  onClick={() => handleClick(item.id)}
-                >
-                  DELETE
-                </Button>
-                <Button
-                  type="primary"
-                  value={index}
-                  onClick={() => handleClick1(item.id)}
-                >
-                  Edit
-                </Button>
-              </Card>
-            ))}
-          </Col>
-        </Row>
+      <div>
+        {text.map((item, index) => (
+          <Card key={index} className="main2" title="Employee Details">
+            <p>Username: {item.username}</p>
+            <p>Email: {item.email}</p>
+            <p>Role: {item.role}</p>
+            <p>Address: {item.address}</p>
+            <p>Salary :{item.salary}</p>
+            <Button
+              type="danger"
+              size="large"
+              value={index}
+              onClick={() => handleClick(item.id)}
+            >
+              DELETE
+            </Button>
+
+            <Button
+              type="primary"
+              size="large"
+              value={index}
+              onClick={() => handleClick1(item.id)}
+            >
+              Edit Details
+            </Button>
+          </Card>
+        ))}
       </div>
     </div>
   );

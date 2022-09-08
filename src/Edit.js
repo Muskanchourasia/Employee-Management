@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { withRouter } from "react-router";
-import { useDispatch, useSelector } from "react-redux";
-import { userData } from "./redux/features/userSlice";
-import { Button } from "antd";
+// import { useDispatch, useSelector } from "react-redux";
+// import { userData } from "./redux/features/userSlice";
+import { Button, Select, Input } from "antd";
+const { Option } = Select;
 
 function EditUi(props) {
   useEffect(() => {
@@ -30,6 +31,12 @@ function EditUi(props) {
   const [address, setAddress] = useState("");
   const [salary, setSalary] = useState("");
   const [password, setPassword] = useState("");
+
+  const handleChange = (value) => {
+    setRole(value);
+  };
+
+  console.log(role);
 
   //const dispatch = useDispatch();
 
@@ -69,6 +76,9 @@ function EditUi(props) {
     // }
     props.history.push("/Dashboard");
   };
+  const handleClick2 = () => {
+    props.history.push("/Dashboard");
+  };
 
   return (
     <div className="main">
@@ -80,7 +90,8 @@ function EditUi(props) {
             Username
           </label>
           <br />
-          <input
+          <Input
+            size="large"
             type="text"
             placeholder="Enter your first name"
             className="name"
@@ -94,7 +105,8 @@ function EditUi(props) {
             Email address:
           </label>
           <br />
-          <input
+          <Input
+            size="large"
             type="text"
             placeholder="Enter your ID or email"
             className="name"
@@ -108,7 +120,8 @@ function EditUi(props) {
             Gender
           </label>
           <br />
-          <input
+          <Input
+            size="large"
             type="text"
             placeholder="Enter your gender"
             className="name"
@@ -122,7 +135,8 @@ function EditUi(props) {
             Mobile no.:
           </label>
           <br />
-          <input
+          <Input
+            size="large"
             type="number"
             placeholder="Enter your mobile no."
             className="name"
@@ -132,24 +146,18 @@ function EditUi(props) {
         <br />
 
         <div>
-          <label className="form-label" htmlFor="Role">
-            Role:
-          </label>
-          <br />
-          {/* <Select> */}
-          <input
-            type="text"
-            placeholder="Enter your Position"
-            className="name"
-            onChange={(event) => setRole(event.target.value)}
-          />
-
-          {/* <Menu>
-              <Menu.Item>junior</Menu.Item>
-              <Menu.Item>senior</Menu.Item>
-              <Menu.Item>lead</Menu.Item>
-            </Menu>
-          </Select> */}
+          <label> Role: </label>
+          <Select
+            defaultValue="Select Role"
+            style={{
+              width: 250,
+            }}
+            onChange={handleChange}
+          >
+            <Option value="junior">junior</Option>
+            <Option value="senior">senior</Option>
+            <Option value="lead">lead</Option>
+          </Select>
         </div>
         <br />
 
@@ -158,7 +166,8 @@ function EditUi(props) {
             Address
           </label>
           <br />
-          <input
+          <Input
+            size="large"
             type="text"
             placeholder="Enter your address"
             className="name"
@@ -172,7 +181,8 @@ function EditUi(props) {
             Salary
           </label>
           <br />
-          <input
+          <Input
+            size="large"
             type="text"
             placeholder="Enter your Salary"
             className="name"
@@ -186,7 +196,8 @@ function EditUi(props) {
             Password:
           </label>
           <br />
-          <input
+          <Input
+            size="large"
             type="password"
             placeholder="Enter your password"
             className="name"
@@ -196,11 +207,27 @@ function EditUi(props) {
         <br />
 
         <div className="Submit-button">
-          <Button type="primary" onClick={handleClick1}>
+          <Button
+            style={{
+              width: 260,
+            }}
+            type="primary"
+            shape="round"
+            onClick={handleClick1}
+          >
             update
           </Button>
 
-          <Button type="primary">cancel</Button>
+          <Button
+            style={{
+              width: 260,
+            }}
+            type="primary"
+            shape="round"
+            onClick={handleClick2}
+          >
+            cancel
+          </Button>
         </div>
       </div>
     </div>

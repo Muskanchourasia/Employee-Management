@@ -1,11 +1,16 @@
-import React, { useCallback } from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { withRouter } from "react-router";
-import { Button } from "antd";
+import { Button, Input } from "antd";
+import { UserOutlined } from "@ant-design/icons";
 
 function LoginUi(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    localStorage.setItem("token", "");
+  }, []);
 
   function handleClick() {
     let data = {
@@ -24,11 +29,19 @@ function LoginUi(props) {
       .then((result) => result.json())
       .then((res) => localStorage.setItem("token", JSON.stringify(res.token)));
 
+    if (
+      localStorage.getItem("token") !== "" &&
+      localStorage.getItem("token") !== "undefined"
+    ) {
+      props.history.push("/dashboard");
+    }
+    // if (email !== "" && password !== "")
     // if (
     //   email === JSON.parse(localStorage.getItem("email")) &&
     //   password === JSON.parse(localStorage.getItem("password")) )
 
-    if (email !== "" && password !== "") props.history.push("/dashboard");
+    // If email not entered
+    // props.history.push("/dashboard");
   }
 
   return (
@@ -42,7 +55,9 @@ function LoginUi(props) {
             </label>
             <br />
 
-            <input
+            <Input
+              size="large"
+              prefix={<UserOutlined />}
               type="text"
               placeholder="Enter your used ID or email"
               className="name"
@@ -55,7 +70,9 @@ function LoginUi(props) {
               Password:
             </label>
             <br />
-            <input
+            <Input
+              size="large"
+              prefix={<UserOutlined />}
               type="password"
               placeholder="Enter your password"
               className="name"
@@ -64,7 +81,14 @@ function LoginUi(props) {
           </div>
           <br />
           <div className="login-button">
-            <Button type="primary" onClick={handleClick}>
+            <Button
+              type="primary"
+              shape="round"
+              style={{
+                width: 260,
+              }}
+              onClick={handleClick}
+            >
               Login
             </Button>
           </div>
